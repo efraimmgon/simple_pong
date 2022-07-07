@@ -13,6 +13,7 @@ class Pong extends StatefulWidget {
 }
 
 class _PongState extends State<Pong> with SingleTickerProviderStateMixin {
+  int score = 0; // game score
   // Every time the ball bounces, we want to change the value of the random
   // number based on the border that is reached.
   double randX = 1; // a random number for the horizontal direction
@@ -70,6 +71,11 @@ class _PongState extends State<Pong> with SingleTickerProviderStateMixin {
 
         return Stack(
           children: <Widget>[
+            Positioned(
+              top: 0,
+              right: 24,
+              child: Text('Score: $score'),
+            ),
             Positioned(
               top: posY,
               left: posX,
@@ -130,6 +136,9 @@ class _PongState extends State<Pong> with SingleTickerProviderStateMixin {
       if (isBatAlignedWithBall()) {
         vDir = Direction.up;
         randY = randomNumber();
+        safeSetState(() {
+          score++;
+        });
       } else {
         controller.stop();
         dispose();
