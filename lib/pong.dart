@@ -96,6 +96,7 @@ class _PongState extends State<Pong> with SingleTickerProviderStateMixin {
     );
   }
 
+  /// Shows a dialog for the player when the game is over
   void showMessage(BuildContext context) {
     showDialog(
       context: context,
