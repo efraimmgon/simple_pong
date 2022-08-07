@@ -96,6 +96,39 @@ class _PongState extends State<Pong> with SingleTickerProviderStateMixin {
     );
   }
 
+  void showMessage(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Game Over'),
+          content: const Text('Would you like to play again?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  posX = 0;
+                  posY = 0;
+                  score = 0;
+                });
+                Navigator.of(context).pop();
+                controller.repeat();
+              },
+              child: const Text("Yes"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                dispose();
+              },
+              child: const Text("No"),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   void moveBat(DragUpdateDetails update) {
     safeSetState(() {
       batPosition += update.delta.dx;
@@ -141,7 +174,7 @@ class _PongState extends State<Pong> with SingleTickerProviderStateMixin {
         });
       } else {
         controller.stop();
-        dispose();
+        showMessage(context);
       }
     }
   }
@@ -167,6 +200,7 @@ class _PongState extends State<Pong> with SingleTickerProviderStateMixin {
     }
   }
 
+  /// Returns a random number, between 0.5 and 1.5
   double randomNumber() {
     int n = Random().nextInt(101);
     // a number between 0.5 and 1.5
